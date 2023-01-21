@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>search.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #9876aa;}
+.s4 { color: #a9b7c6;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+search.php</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?php</span>
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">'Models/SearchDataset.php'</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Models/UserDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s3">$view </span><span class="s1">= </span><span class="s0">new </span><span class="s4">stdClass</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">pageTitle </span><span class="s1">= </span><span class="s2">&quot;User Search Results&quot;</span><span class="s0">;</span>
+
+<span class="s5">// start the session</span>
+<span class="s4">session_start</span><span class="s1">()</span><span class="s0">;</span>
+
+<span class="s5">//create a new instance of the searchUsers class</span>
+<span class="s3">$searchDataset </span><span class="s1">= </span><span class="s0">new </span><span class="s4">SearchDataset</span><span class="s1">()</span><span class="s0">;</span>
+
+<span class="s5">//when the user search button is clicked</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'userSearchBtn'</span><span class="s1">])) {</span>
+    <span class="s5">//make the user's search userSearch</span>
+    <span class="s3">$userSearch </span><span class="s1">= </span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'searchUsers'</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s5">//only show records matching entered search term</span>
+    <span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">searchDataset </span><span class="s1">= </span><span class="s3">$searchDataset</span><span class="s1">-&gt;</span><span class="s4">fetchAllSearchedUsers</span><span class="s1">(</span><span class="s3">$userSearch</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s1">}</span>
+
+<span class="s5">// Fetch the details of all the searched users</span>
+<span class="s0">if </span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_GET</span><span class="s1">[</span><span class="s2">'live_search'</span><span class="s1">])){</span>
+    <span class="s3">$searchText </span><span class="s1">= </span><span class="s3">$_GET</span><span class="s1">[</span><span class="s2">'live_search'</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s3">$usersArr </span><span class="s1">= </span><span class="s3">$searchDataset</span><span class="s1">-&gt;</span><span class="s4">fetchAllSearchedUsers</span><span class="s1">(</span><span class="s3">$searchText</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s0">echo </span><span class="s4">json_encode</span><span class="s1">(</span><span class="s3">$usersArr</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s5">//prevent the systems from running forever</span>
+    <span class="s0">return;</span>
+<span class="s1">}</span>
+
+
+
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Views/search.phtml&quot;</span><span class="s1">)</span><span class="s0">;</span></pre>
+</body>
+</html>

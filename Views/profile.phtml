@@ -1,0 +1,15 @@
+<?php require('template/header.phtml') ?>
+
+<?php if(isset($_SESSION["userID"]))
+    echo "Hello, " . $_SESSION["firstName"];
+?>
+
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <h1>PROFILE</h1>
+        </div>
+    </div>
+
+
+
+<?php require ('template/footer.phtml') ?>

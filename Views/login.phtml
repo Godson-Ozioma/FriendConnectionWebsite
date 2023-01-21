@@ -1,0 +1,42 @@
+<?php require('template/header.phtml') ?>
+
+
+<div class="container-login">
+    <div class="wrapper-login">
+        <div class="row text-center">
+            <div class="col-sm-12">
+                <h1>LOGIN</h1>
+            </div>
+        </div>
+        <!-- Login form -->
+        <form method="post" action="" class="text-center">
+            <?php if(isset($view->loggedin)) : ?>
+            <p class="text-danger"><?php echo $view->loggedin ?></p>
+            <?php endif;?>
+<!--            input username-->
+            <div class="container-login">
+<!--                <label for="username">Username</label>-->
+                <input type="text" placeholder="Enter Username" name="username" value="<?php if(isset($_POST['username'])){echo $_POST['username'];}?>" required>
+            </div>
+<!--            input password-->
+            <div class="container-login">
+<!--                <label for="password">Password</label>-->
+                <input type="password" placeholder="Password" name="password" value="<?php if(isset($_POST['password'])){echo $_POST['password'];}?>" required>
+            </div>
+<!--            login button-->
+            <div class="container-login">
+                <input class="login-button" name="submit-login" type="submit" value="login">
+            </div>
+
+<!--            Display registration link and message-->
+            <div class="register-message">
+                <p>Don't have an account?<a href="/register.php">Register</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<?php require('template/footer.phtml') ?>

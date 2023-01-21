@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>friends.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #9876aa;}
+.s4 { color: #a9b7c6;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+friends.php</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?php</span>
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Models/FriendsDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Models/UserDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s3">$view </span><span class="s1">= </span><span class="s0">new </span><span class="s4">stdClass</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">pageTitle </span><span class="s1">= </span><span class="s2">&quot;Register&quot;</span><span class="s0">;</span>
+
+
+<span class="s5">// start the session</span>
+<span class="s4">session_start</span><span class="s1">()</span><span class="s0">;</span>
+
+
+<span class="s3">$friendsDataset </span><span class="s1">=   </span><span class="s0">new </span><span class="s4">FriendsDataset</span><span class="s1">()</span><span class="s0">;</span>
+
+<span class="s5">//Display all users friends when user is logged in</span>
+<span class="s0">if </span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">'userID'</span><span class="s1">])){</span><span class="s5">//checks if user is logged in</span>
+<span class="s5">//    displays a list of all users friends</span>
+    <span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">friendsDataset </span><span class="s1">= </span><span class="s3">$friendsDataset</span><span class="s1">-&gt;</span><span class="s4">displayAllFriends</span><span class="s1">(</span><span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">'userID'</span><span class="s1">])</span><span class="s0">;</span>
+
+<span class="s5">//    To get the friends details and create an array that stores the friends details</span>
+    <span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_GET</span><span class="s1">[</span><span class="s2">'live_location'</span><span class="s1">])){</span>
+<span class="s5">//        returns the details of all friends</span>
+        <span class="s3">$friends </span><span class="s1">= </span><span class="s3">$friendsDataset</span><span class="s1">-&gt;</span><span class="s4">displayAllFriends</span><span class="s1">(</span><span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">'userID'</span><span class="s1">])</span><span class="s0">;</span>
+
+
+        <span class="s3">$response </span><span class="s1">= []</span><span class="s0">;</span>
+        <span class="s0">foreach</span><span class="s1">(</span><span class="s3">$friends </span><span class="s0">as </span><span class="s3">$friend</span><span class="s1">){</span>
+            <span class="s3">$arr </span><span class="s1">= []</span><span class="s0">;</span>
+            <span class="s3">$arr</span><span class="s1">[] = </span><span class="s3">$friend </span><span class="s1">-&gt; </span><span class="s4">getUsername</span><span class="s1">()</span><span class="s0">;</span><span class="s5">//array to store the friends username</span>
+            <span class="s3">$arr</span><span class="s1">[] = </span><span class="s3">$friend </span><span class="s1">-&gt; </span><span class="s4">getLatitude</span><span class="s1">()</span><span class="s0">;</span><span class="s5">//array for the friends latitude to be able to view friend's location on the map</span>
+            <span class="s3">$arr</span><span class="s1">[] = </span><span class="s3">$friend </span><span class="s1">-&gt; </span><span class="s4">getLongitude</span><span class="s1">()</span><span class="s0">;</span><span class="s5">//array for the friends longitude to be able to view friend's location on the map</span>
+            <span class="s3">$response</span><span class="s1">[] = </span><span class="s3">$arr</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">echo </span><span class="s4">json_encode</span><span class="s1">(</span><span class="s3">$response</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Views/friends.phtml&quot;</span><span class="s1">)</span><span class="s0">;</span></pre>
+</body>
+</html>

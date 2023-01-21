@@ -1,0 +1,70 @@
+<?php require('template/header.phtml') ?>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div id="ui">
+
+                <h1 class="text-center">REGISTRATION</h1>
+
+                <form method="post" action="" class="form-group text-center">
+                    <div class="row">
+<!--            Input First Name to the registration form-->
+                        <div class="col-lg-6">
+                            <label>First Name</label>
+                            <input type="text" placeholder="Enter your First name" class="form-control" name="firstName" value="<?php if(isset($_POST['firstName'])){echo $_POST['firstName'];} ?>" required>
+                        </div>
+<!--            Input Last Name to registration form-->
+                        <div class="col-lg-6">
+                            <label>Last Name</label>
+                            <input type="text" placeholder="Enter your Last name" name="lastName" class="form-control" value="<?php if(isset($_POST['lastName'])){echo $_POST['lastName'];} ?>" required>
+
+                        </div>
+                    </div>
+                        <br>
+<!--            Input email address to form-->
+                    <label>Email</label>
+                    <input type="email" placeholder="Enter your email address" name="email" class="form-control" value="<?php if(isset($_POST['email'])){echo $_POST['email'];} ?>" required>
+                        <br>
+<!--            Input username to the form-->
+                    <label>Username</label>
+                    <input type="text" placeholder="Enter your username" name="userName" class="form-control" value="<?php if(isset($_POST['userName'])){echo $_POST['userName'];} ?>" required>
+
+<!--            Input password to the form-->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label>Password</label>
+                            <input type="password" placeholder="Enter your password" name="passWord" class="form-control" required>
+                        </div>
+
+<!--            Confirm password-->
+                        <div class="col-lg-6">
+                            <label>Confirm Password</label>
+                            <input type="password" placeholder="Confirm password" name="confirmPassword" class="form-control" required>
+                        </div>
+
+                    </div>
+                    <?php if(isset($view->register)) : ?>
+                        <p class="text-danger"><?php echo $view->register ?></p>
+                    <?php endif;?>
+
+                    <?php if(isset($view->userWrong)) : ?>
+                        <p class="text-danger"><?php echo $view->userWrong ?></p>
+                    <?php endif;?>
+                        <br>
+
+                    <!--        Registration button-->
+
+                    <input type="submit" name="submit-register" value="Register" class="btn btn-primary btn-block btn-lg">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<?php require('template/footer.phtml') ?>

@@ -1,0 +1,32 @@
+<?php require_once ("template/header.phtml")?>
+
+<!--check if the user is logged in and displays a welcome message along sides their first name-->
+<?php if(isset($_SESSION["userID"]))
+    // welcomes user after they have logged in
+    echo "Hello, " . $_SESSION["firstName"];
+?>
+<!--    The Home Page-->
+    <div class="row hometainer">
+        <div class="row text-center">
+            <div class="col-sm-12">
+                <h1>SAPA</h1>
+
+<!--                Form to enable a user search for other users-->
+                <form method="post" action="../search.php?page=1">
+<!--                    Implementation of the live search-->
+                    <input  class="search-bar" type="search" name="searchUsers" placeholder="Search for a username..." onkeyup="liveSearch(this.value)">
+<!--                    creates a search button -->
+                    <input type="submit" name="userSearchBtn" value="Search">
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+<!--    displays the search results of the live search-->
+    <div class="row justify-content-center" id="live_search_result"></div>
+
+<script src="../JS/searcher.js"></script>
+<?php require ("Views/template/footer.phtml");
+
+

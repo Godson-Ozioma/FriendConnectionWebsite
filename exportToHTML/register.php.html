@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>register.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #9876aa;}
+.s4 { color: #a9b7c6;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+register.php</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?php</span>
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Models/UserDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s3">$view </span><span class="s1">= </span><span class="s0">new </span><span class="s4">stdClass</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">pageTitle </span><span class="s1">= </span><span class="s2">&quot;Register&quot;</span><span class="s0">;</span>
+
+<span class="s5">// start the session</span>
+<span class="s4">session_start</span><span class="s1">()</span><span class="s0">;</span>
+
+<span class="s3">$userDataset </span><span class="s1">= </span><span class="s0">new </span><span class="s4">UserDataset</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s5">//when the register button is pressed</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'submit-register'</span><span class="s1">]))</span>
+<span class="s1">{</span>
+    <span class="s3">$firstName </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'firstName'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s3">$lastName </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'lastName'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s3">$email </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'email'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s3">$username </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'userName'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s3">$password </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'passWord'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s3">$confirmPassword </span><span class="s1">= </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'confirmPassword'</span><span class="s1">])</span><span class="s0">;</span>
+
+        <span class="s0">if </span><span class="s1">(</span><span class="s3">$username </span><span class="s1">== </span><span class="s2">'userName'</span><span class="s1">)</span>
+        <span class="s1">{</span>
+            <span class="s0">if</span><span class="s1">(</span><span class="s3">$password </span><span class="s1">== </span><span class="s3">$confirmPassword</span><span class="s1">)</span>
+            <span class="s1">{</span>
+<span class="s5">//        password encryption</span>
+                <span class="s3">$password </span><span class="s1">= </span><span class="s4">password_hash</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'passWord'</span><span class="s1">]</span><span class="s0">, </span><span class="s4">PASSWORD_DEFAULT</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s5">//        inserting the users imputed details into the users table</span>
+                <span class="s3">$regComplete </span><span class="s1">= </span><span class="s3">$userDataset</span><span class="s1">-&gt;</span><span class="s4">registerUser</span><span class="s1">(</span><span class="s3">$firstName</span><span class="s0">, </span><span class="s3">$lastName</span><span class="s0">, </span><span class="s3">$email</span><span class="s0">, </span><span class="s3">$username</span><span class="s0">, </span><span class="s3">$password</span><span class="s1">)</span><span class="s0">;</span>
+
+                <span class="s0">if </span><span class="s1">(</span><span class="s3">$regComplete</span><span class="s1">)</span>
+                <span class="s1">{</span>
+                    <span class="s3">$user </span><span class="s1">= </span><span class="s3">$userDataset</span><span class="s1">-&gt;</span><span class="s4">fetchUserDetails</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'firstName'</span><span class="s1">])    </span><span class="s0">;</span>
+
+                    <span class="s5">//login the user after successfully signing up</span>
+                    <span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;userID&quot;</span><span class="s1">] = </span><span class="s3">$user</span><span class="s1">-&gt;</span><span class="s4">getUserID</span><span class="s1">()</span><span class="s0">;</span>
+                    <span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;firstName&quot;</span><span class="s1">] = </span><span class="s3">$user</span><span class="s1">-&gt;</span><span class="s4">getFirstName</span><span class="s1">()</span><span class="s0">;</span>
+                    <span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;loggedin&quot;</span><span class="s1">] = </span><span class="s4">true</span><span class="s0">;</span>
+                    <span class="s4">header</span><span class="s1">(</span><span class="s2">&quot;Location: index.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+            <span class="s1">}</span><span class="s0">else</span>
+            <span class="s1">{</span>
+                <span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">register </span><span class="s1">= </span><span class="s2">&quot;Password and Confirm password do not match&quot;</span><span class="s0">;</span>
+
+
+            <span class="s1">}</span>
+        <span class="s1">}</span><span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">userWrong </span><span class="s1">= </span><span class="s2">&quot;username taken&quot;</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+
+
+
+<span class="s1">}</span>
+
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Views/register.phtml&quot;</span><span class="s1">)</span><span class="s0">;</span>
+</pre>
+</body>
+</html>
