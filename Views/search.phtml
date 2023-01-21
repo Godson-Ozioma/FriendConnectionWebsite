@@ -1,0 +1,42 @@
+<?php require('template/header.phtml') ?>
+
+    <div class="row">
+        <?php
+        // Display the details of all users
+        if (!isset($_SESSION['userID'])) {
+
+//when user is not logged in
+            foreach ($view->searchDataset as $user) {
+                echo '
+                    <div class="col-sm-4 col-lg-3 p-3">
+                      <div class="card">
+                        <div class="card-body text-center">
+
+                            <p class="card-text">' . $user->getUsername() . '</p>
+                            <p class="card-text"><img src="'. $user->getProfilePicture() . '" </p>
+                        </div>
+                      </div>
+                    </div>';
+            }
+        }else{
+            //when user is logged in
+            foreach ($view->searchDataset as $user) {
+                echo '
+                    <div class="col-sm-4 col-lg-3 p-3">
+                      <div class="card">
+                        <div class="card-body text-center">
+//                          
+                            <p class="card-text">' . $user->getFirstName() . '</p>
+                            <p class="card-text">' . 'Username: ' . $user->getUsername() . '</p>
+                            <p class="card-text">' . $user->getEmail() . '</p>
+                            <p class="card-text"><img src="'. $user->getProfilePicture() . '" </p>
+                            <a href="./request.php?user_id='. $user->getUserID().'">Request</a>
+                        </div>
+                      </div>
+                    </div>';
+            }
+        }
+        ?>
+    </div>
+
+<?php require ('template/footer.phtml') ?>

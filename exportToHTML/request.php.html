@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>request.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #9876aa;}
+.s5 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+request.php</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?php</span>
+<span class="s2">//require_once ('Models/SearchDataset.php');</span>
+<span class="s0">require_once </span><span class="s1">(</span><span class="s3">&quot;Models/FriendsDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s4">$view </span><span class="s1">= </span><span class="s0">new </span><span class="s5">stdClass</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s4">$view</span><span class="s1">-&gt;</span><span class="s5">pageTitle </span><span class="s1">= </span><span class="s3">&quot;Request&quot;</span><span class="s0">;</span>
+
+<span class="s2">// start the session</span>
+<span class="s5">session_start</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s4">$loggedInUser </span><span class="s1">= </span><span class="s4">$_SESSION</span><span class="s1">[</span><span class="s3">'userID'</span><span class="s1">]</span><span class="s0">;</span>
+<span class="s4">$friendsDataset </span><span class="s1">= </span><span class="s0">new </span><span class="s5">FriendsDataset</span><span class="s1">()</span><span class="s0">;</span>
+
+<span class="s0">if </span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s4">$_SESSION</span><span class="s1">[</span><span class="s3">'userID'</span><span class="s1">])){</span>
+    <span class="s4">$view</span><span class="s1">-&gt;</span><span class="s5">allRequests </span><span class="s1">= </span><span class="s4">$friendsDataset</span><span class="s1">-&gt;</span><span class="s5">getAllRequests</span><span class="s1">(</span><span class="s4">$loggedInUser</span><span class="s1">)</span><span class="s0">;</span>
+
+
+<span class="s1">}</span>
+<span class="s0">if </span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'live_request'</span><span class="s1">])) {</span>
+    <span class="s4">$allRequests </span><span class="s1">= </span><span class="s4">$friendsDataset</span><span class="s1">-&gt;</span><span class="s5">getAllRequests</span><span class="s1">(</span><span class="s4">$loggedInUser</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s0">echo </span><span class="s5">json_encode</span><span class="s1">(</span><span class="s4">$allRequests</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s0">return;</span>
+<span class="s1">}</span>
+
+<span class="s2">// user requested to be friends</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'user_id'</span><span class="s1">])) {</span>
+    <span class="s4">$receiverID </span><span class="s1">= </span><span class="s5">htmlentities</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'user_id'</span><span class="s1">])</span><span class="s0">;</span>
+    <span class="s4">$senderID </span><span class="s1">= </span><span class="s4">$_SESSION</span><span class="s1">[</span><span class="s3">'userID'</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s4">$friendsDataset</span><span class="s1">-&gt;</span><span class="s5">sendRequest</span><span class="s1">(</span><span class="s4">$senderID</span><span class="s0">, </span><span class="s4">$receiverID</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s5">header</span><span class="s1">(</span><span class="s3">'Location: index.php'</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s1">}</span>
+
+
+
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'accept_user_id'</span><span class="s1">])) {</span>
+    <span class="s4">$requestingID </span><span class="s1">= </span><span class="s5">htmlentities</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'accept_user_id'</span><span class="s1">])</span><span class="s0">;</span>
+<span class="s2">//    $senderID = $_SESSION['userID'];</span>
+    <span class="s4">$friendsDataset</span><span class="s1">-&gt;</span><span class="s5">acceptRequest</span><span class="s1">(</span><span class="s4">$loggedInUser</span><span class="s0">, </span><span class="s4">$requestingID</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s1">}</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'reject_user_id'</span><span class="s1">])) {</span>
+    <span class="s4">$requestingID </span><span class="s1">= </span><span class="s5">htmlentities</span><span class="s1">(</span><span class="s4">$_GET</span><span class="s1">[</span><span class="s3">'reject_user_id'</span><span class="s1">])</span><span class="s0">;</span>
+<span class="s2">//    $senderID = $_SESSION['userID'];</span>
+    <span class="s4">$friendsDataset</span><span class="s1">-&gt;</span><span class="s5">deleteRequest</span><span class="s1">(</span><span class="s4">$requestingID</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s1">}</span>
+
+
+
+
+
+
+
+
+
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s3">'Views/request.phtml'</span><span class="s1">)</span><span class="s0">;</span></pre>
+</body>
+</html>

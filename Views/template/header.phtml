@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+
+<!--    <link rel="stylesheet" href="/css/style.css">-->
+
+    <title>Assignment2- <?php echo $view->pageTitle; ?></title>
+
+</head>
+
+<body role="document">
+
+<!--Try-->
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href=""><img class="logo" src="/Images/logo.png"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+
+            <ul class="nav navbar-nav navbar-right">
+        <!-- Display the Home page link button-->
+                <li><a href="/index.php"> Home</a></li>
+<!--        Display the user page link button-->
+                <li><a href="/users.php"> Users</a></li>
+<!--        Display the friends page after user has logged in-->
+        <?php if(isset($_SESSION['userID'])) : ?>
+            <li><a href="friends.php"><span class="glyphicon glyphicon-user"></span> Friends</a></li>
+        <?php endif;?>
+
+<!--        Display login and logout buttons in the header-->
+<!--        change the login button to logout after user logs in-->
+
+<!--        checks if user is not logged in-->
+        <?php if(!isset($_SESSION['userID'])) : ?>
+            <li><a href="login.php"> Login</a></li>
+<!--        when the user is logged in-->
+        <?php else : ?>
+            <li><a href="login.php?logout=true"> Logout</a></li>
+        <?php endif;?>
+    </ul>
+</nav>
+
+
+
+
+

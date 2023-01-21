@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>login.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #9876aa;}
+.s4 { color: #a9b7c6;}
+.s5 { color: #808080;}
+.s6 { color: #629755; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+login.php</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?php</span>
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">&quot;Models/UserDataset.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+<span class="s3">$view </span><span class="s1">= </span><span class="s0">new </span><span class="s4">stdClass</span><span class="s1">()</span><span class="s0">;</span>
+<span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">pageTitle </span><span class="s1">= </span><span class="s2">&quot;Login&quot;</span><span class="s0">;</span>
+
+<span class="s5">// start the session</span>
+<span class="s4">session_start</span><span class="s1">()</span><span class="s0">;</span>
+
+
+<span class="s5">//if(isset($_SESSION['userID'])){</span>
+<span class="s5">//    echo $_SESSION['firstName'];</span>
+<span class="s5">//}else{</span>
+<span class="s5">//    echo &quot;NOT LOGGED IN&quot;;</span>
+<span class="s5">//}</span>
+<span class="s6">/**</span>
+ <span class="s6">* for when the login button is pressed</span>
+ <span class="s6">*/</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">&quot;submit-login&quot;</span><span class="s1">])) </span><span class="s5">// check if login button is pressed</span>
+<span class="s1">{</span>
+    <span class="s3">$userDataset </span><span class="s1">= </span><span class="s0">new </span><span class="s4">UserDataset</span><span class="s1">()</span><span class="s0">;</span>
+    <span class="s3">$username </span><span class="s1">= </span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'username'</span><span class="s1">]</span><span class="s0">;</span>
+<span class="s5">//    echo &quot;un: &quot; . $username;</span>
+    <span class="s3">$password </span><span class="s1">= </span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'password'</span><span class="s1">]</span><span class="s0">;</span>
+<span class="s5">//    echo &quot;pw: &quot; . $password;</span>
+<span class="s5">//    call the verifyUserLogin in userDataset class to check if the inserted username and password is correct</span>
+    <span class="s3">$correct </span><span class="s1">= </span><span class="s3">$userDataset</span><span class="s1">-&gt;</span><span class="s4">verifyUserLogin</span><span class="s1">(</span><span class="s3">$username</span><span class="s0">, </span><span class="s3">$password</span><span class="s1">)</span><span class="s0">;</span>
+
+    <span class="s5">// if the inserted user details is correct</span>
+    <span class="s0">if</span><span class="s1">(</span><span class="s3">$correct</span><span class="s1">){</span>
+<span class="s5">//        echo &quot;correct&quot;;</span>
+        <span class="s5">//get an instance of the user details from the userDataset class</span>
+        <span class="s3">$user </span><span class="s1">= </span><span class="s3">$userDataset</span><span class="s1">-&gt;</span><span class="s4">fetchUserDetails</span><span class="s1">(</span><span class="s3">$_POST</span><span class="s1">[</span><span class="s2">'username'</span><span class="s1">])</span><span class="s0">;</span>
+        <span class="s5">//create a session for the user</span>
+        <span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;userID&quot;</span><span class="s1">] = </span><span class="s3">$user</span><span class="s1">-&gt;</span><span class="s4">getUserID</span><span class="s1">()</span><span class="s0">;</span>
+        <span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;firstName&quot;</span><span class="s1">] = </span><span class="s3">$user</span><span class="s1">-&gt;</span><span class="s4">getFirstName</span><span class="s1">()</span><span class="s0">;</span>
+
+
+        <span class="s5">// redirect the user to the profile page after logged in correctly</span>
+        <span class="s4">header</span><span class="s1">(</span><span class="s2">&quot;Location: index.php&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span><span class="s5">// when wrong details entered</span>
+<span class="s5">//        show error message when wrong details is used</span>
+        <span class="s3">$view</span><span class="s1">-&gt;</span><span class="s4">loggedin </span><span class="s1">= </span><span class="s2">&quot;Wrong username or password&quot;</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+
+<span class="s5">// logout button pressed</span>
+<span class="s0">if</span><span class="s1">(</span><span class="s0">isset</span><span class="s1">(</span><span class="s3">$_GET</span><span class="s1">[</span><span class="s2">&quot;logout&quot;</span><span class="s1">])){</span>
+    <span class="s3">$logout </span><span class="s1">=  </span><span class="s4">htmlentities</span><span class="s1">(</span><span class="s3">$_GET</span><span class="s1">[</span><span class="s2">'logout'</span><span class="s1">])</span><span class="s0">;</span>
+<span class="s5">//    var_dump($logout);</span>
+    <span class="s0">if</span><span class="s1">(</span><span class="s3">$logout </span><span class="s1">== </span><span class="s2">'true'</span><span class="s1">){</span>
+        <span class="s5">//end the sessions and log user out</span>
+        <span class="s0">unset</span><span class="s1">(</span><span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;userID&quot;</span><span class="s1">])</span><span class="s0">; </span><span class="s5">//end the userID session</span>
+        <span class="s0">unset</span><span class="s1">(</span><span class="s3">$_SESSION</span><span class="s1">[</span><span class="s2">&quot;firstName&quot;</span><span class="s1">])</span><span class="s0">; </span><span class="s5">//end the firstName session</span>
+
+
+   <span class="s4">session_destroy</span><span class="s1">()</span><span class="s0">;</span>
+        <span class="s4">header</span><span class="s1">(</span><span class="s2">&quot;Location: login.php&quot;</span><span class="s1">)</span><span class="s0">; </span><span class="s5">//redirect user to login page after logging out</span>
+    <span class="s1">}</span>
+
+
+
+<span class="s1">}</span>
+
+<span class="s0">require_once </span><span class="s1">(</span><span class="s2">'./Views/login.phtml'</span><span class="s1">)</span><span class="s0">;</span></pre>
+</body>
+</html>

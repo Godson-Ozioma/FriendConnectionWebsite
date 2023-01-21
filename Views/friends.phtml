@@ -1,0 +1,57 @@
+<?php require('template/header.phtml') ?>
+
+
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <h1>Friends</h1>
+        </div>
+    </div>
+
+<!--Display the map that shows the location of friends-->
+    <div id="Map"
+    style="width: 100vw; height: 600px"></div>
+
+
+    <script
+    src="../OpenLayers-2.13.1/OpenLayers.js"></script>
+
+    <script src="JS/mapping.js"></script>
+
+
+<!--button to view friend requests-->
+    <a href="request.php">Friend Requests</a>
+    <div class="row">
+        <?php
+        // Display the details of all friends
+        foreach ($view->friendsDataset as $friends) {
+            echo '
+                    <div class="col-sm-4 col-lg-3 p-3">
+                      <div class="card">
+                        <div class="card-body text-center">
+                            
+                            
+                            <p class="card-text">' . $friends->getUserName() . '</p>
+                            
+                            
+                        </div>
+                      </div>
+                    </div>';
+        }
+        ?>
+    </div>
+<!--    <p class="card-text">' . $friends->getFirstName() . '</p>-->
+
+
+
+
+<?php //else: ?>
+<!--    <div class="container text-center">-->
+<!--        <img src="../images/cat-1.jpg" class="rounded mx-auto d-block pt-4 border-none "  width="400" height="400" alt="">-->
+<!--        <br>-->
+<!--        <h2 class="font-weight-20 text-center font-size:100px pt-4 mx-5">You have no friends. Add someone today&#128540;...</h2>-->
+<!--    </div>-->
+<?php //endif; ?>
+
+
+
+<?php require ('template/footer.phtml') ?>
